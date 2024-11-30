@@ -1,3 +1,3 @@
 export const motion = {
-    MOVE_SPEED: 50
+    MOVE_SPEED: 5
 }
