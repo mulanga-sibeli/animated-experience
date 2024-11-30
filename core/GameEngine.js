@@ -27,7 +27,8 @@ export class GameEngine {
 
         // Add controls
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.addEventListener('change', this.render.bind(this));
+        this.render = this.render.bind(this);
+        this.controls.addEventListener('change', this.render);
         this.keys = {};
 
         this.animate = this.animate.bind(this);
