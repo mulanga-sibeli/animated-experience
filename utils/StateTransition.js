@@ -4,9 +4,7 @@ import {Character} from "../entities/Character.js";
 
 export function initializeGame() {
     const currentScene = new StreetScene();
-    const character = new Character(10, 10, 10, 0xff0000);
-    character.position = { x: 0, y: 0, z: 0 };
-    character.speed = 1;
+    const character = new Character('/teen_boy.glb', 1, { x: 0, y: 0, z: 0 });
     currentScene.add(character);
     const gameState = new GameState(currentScene, character);
     return gameState;
