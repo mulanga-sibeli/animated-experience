@@ -2,25 +2,28 @@ import { Sky } from "three/addons/objects/Sky.js";
 import * as THREE from "three";
 import { Scene } from "three";
 
-export class StreetScene {
+export class StreetScene extends Scene {
     sky;
     sun;
-    scene;
+    character;
+    name;
 
-    constructor(camera, renderer) {
-        this.scene = new Scene();
+    constructor() {
+        super();
 
+        this.name = "StreetScene";
         const helper = new THREE.GridHelper( 10000, 2, 0xffffff, 0xffffff );
-        this.scene.add( helper );
+        this.add( helper );
 
         this.sky = new Sky();
-        this.sky.scale.setScalar( 450000 );
-        this.scene.add( this.sky );
+        this.sky.scale.setScalar(450000);
+        this.add( this.sky );
+
         this.sun = new THREE.Vector3();
-        this.addSunToScene(this.scene, camera, renderer);
+        this.addSunToScene();
     }
 
-    addSunToScene(scene, camera, renderer) {
+    addSunToScene() {
         const effectController = {
             turbidity: 10,
             rayleigh: 3,
@@ -28,7 +31,7 @@ export class StreetScene {
             mieDirectionalG: 0.7,
             elevation: 2,
             azimuth: 180,
-            exposure: renderer.toneMappingExposure
+            exposure: 0.5
         };
 
         const uniforms = this.sky.material.uniforms;
@@ -43,7 +46,5 @@ export class StreetScene {
         this.sun.setFromSphericalCoords(1, phi, theta);
 
         uniforms['sunPosition'].value.copy(this.sun);
-
-        renderer.toneMappingExposure = effectController.exposure;
     }
 }
