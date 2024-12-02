@@ -1,3 +1,3 @@
 export const motion = {
-    MOVE_SPEED: 5
-}
+  MOVE_SPEED: 5,
+};
