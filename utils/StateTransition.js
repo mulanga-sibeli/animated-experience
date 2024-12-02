@@ -1,11 +1,10 @@
 import { StreetScene } from "../scenes/StreetScene.js";
 import { GameState } from "../core/GameState.js";
 import { Character } from "../entities/Character.js";
-import { AnimationMixer } from "three";
 
 export function initializeGame() {
   const currentScene = new StreetScene();
-  const character = new Character("/Idle.fbx", 1, { x: 0, y: 0, z: 0 });
+  const character = new Character("/Idle.fbx", 1, { x: 0, y: 10, z: 0 });
   currentScene.add(character);
 
   const gameState = new GameState(currentScene, character);

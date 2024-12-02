@@ -1,4 +1,3 @@
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { AnimationMixer, Object3D } from "three";
 import { FBXLoader } from "three/addons";
 
@@ -26,7 +25,7 @@ export class Character extends Object3D {
       },
       undefined,
       (error) => {
-        console.error("Error loading GLTF model:", error);
+        console.error("Error loading FBX model:", error);
       }
     );
 
