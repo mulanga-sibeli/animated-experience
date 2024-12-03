@@ -27,14 +27,15 @@ export class GameEngine {
 
     this.gameState = TransitionFunction.initializeGame();
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.addEventListener("change", this.render);
     this.keys = {};
 
     this.clock = new THREE.Clock();
 
     this.animate = this.animate.bind(this);
     this.render = this.render.bind(this);
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.addEventListener("change", this.render);
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
     window.addEventListener("keydown", this.onKeyDown.bind(this));
@@ -57,10 +58,6 @@ export class GameEngine {
   }
 
   animate() {
-    const deltaTime = this.clock.getDelta();
-    if (this.gameState.character.mixer) {
-      this.gameState.character.mixer.update(deltaTime);
-    }
     requestAnimationFrame(this.animate);
     TransitionFunction.handleAction(this.gameState, this.keys);
     this.render();
