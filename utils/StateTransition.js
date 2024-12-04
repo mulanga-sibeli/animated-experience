@@ -5,7 +5,7 @@ import { Move } from "../enums/Actions.js";
 
 export function initializeGame() {
   const currentScene = new StreetScene();
-  const character = new Character("characters/mid20s.glb", 2, {
+  const character = new Character("characters/mid20s.glb", 0.5, {
     x: 0,
     y: 10,
     z: 500,
