@@ -1,0 +1,10 @@
+1. Add Ammojs for physics.
+2. Animate scenes.
+   - Animated skyboxes.
+   - Animated plants.
+   - Animated birds.
+   - Animated dogs with sounds.
+3. Add ambient sounds.
+4. Add character interaction sounds.
+5. Consider NPC.
+6 Add characters for different eras.
