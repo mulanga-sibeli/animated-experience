@@ -6,9 +6,9 @@ import { Move } from "../enums/Actions.js";
 export function initializeGame() {
   const currentScene = new StreetScene();
   const character = new Character("characters/mid20s.glb", 0.5, {
-    x: 0,
-    y: 10,
-    z: 500,
+    x: -200,
+    y: 5,
+    z: 100,
   });
   currentScene.add(character);
   const gameState = new GameState(currentScene, character);
@@ -36,7 +36,6 @@ export function handleAction(gameState, keys) {
     if (!currentAnimation) return;
     const actionClip = gameState.character.mixer.clipAction(currentAnimation);
 
-    // TODO: There has to be a better way to do this.
     gameState.character.mixer._actions.forEach((action) => {
       if (action !== actionClip) {
         action.stop();

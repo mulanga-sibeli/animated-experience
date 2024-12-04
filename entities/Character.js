@@ -2,7 +2,6 @@ import { AnimationMixer, FrontSide, LoopOnce, Object3D } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 export class Character extends Object3D {
-  position;
   speed;
   mixer;
   animations;
@@ -16,9 +15,8 @@ export class Character extends Object3D {
       gltfPath,
       (gltf) => {
         const model = gltf.scene;
-        model.position.set(0, 0, 0);
         model.rotateY(Math.PI);
-        model.scale.set(15, 15, 15);
+        model.scale.set(30, 30, 30);
 
         model.traverse((node) => {
           if (node.isMesh) {
@@ -53,7 +51,7 @@ export class Character extends Object3D {
       }
     );
 
-    this.position = position;
+    this.position.set(position.x, position.y, position.z);
     this.speed = speed;
   }
 }

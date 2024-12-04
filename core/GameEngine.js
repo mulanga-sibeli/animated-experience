@@ -65,13 +65,11 @@ export class GameEngine {
 
   render() {
     const deltaTime = this.clock.getDelta();
-    if (this.gameState.character.mixer) {
-      this.gameState.character.mixer.update(deltaTime);
-    }
+    this.gameState.character.mixer?.update(deltaTime);
     this.camera.position.set(
       this.gameState.character.position.x,
-      this.gameState.character.position.y + 25,
-      this.gameState.character.position.z + 70
+      this.gameState.character.position.y + 50,
+      this.gameState.character.position.z + 75
     );
     this.renderer.render(this.gameState.currentScene, this.camera);
   }
