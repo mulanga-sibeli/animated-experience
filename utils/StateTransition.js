@@ -1,6 +1,5 @@
 import { StreetScene } from "../scenes/StreetScene.js";
 import { GameState } from "../core/GameState.js";
-import { Character } from "../entities/Character.js";
 import { Move } from "../enums/Actions.js";
 import * as THREE from "three";
 
