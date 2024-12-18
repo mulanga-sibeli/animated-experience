@@ -1,10 +1,8 @@
 export class GameState {
-  scenes = {};
   currentScene;
-  character;
-  constructor(currentScene, character) {
-    this.scenes[currentScene.name] = currentScene;
+  camera;
+  constructor(currentScene, camera) {
     this.currentScene = currentScene;
-    this.character = character;
+    this.camera = camera;
   }
 }

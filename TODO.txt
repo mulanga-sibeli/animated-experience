@@ -7,4 +7,4 @@
 3. Add ambient sounds.
 4. Add character interaction sounds.
 5. Consider NPC.
-6 Add characters for different eras.
+6. Add characters for different eras.

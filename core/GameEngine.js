@@ -11,13 +11,6 @@ export class GameEngine {
   clock;
 
   constructor() {
-    this.camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      10,
-      20000
-    );
-
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -28,24 +21,32 @@ export class GameEngine {
     this.gameState = TransitionFunction.initializeGame();
 
     this.keys = {};
-
     this.clock = new THREE.Clock();
 
     this.animate = this.animate.bind(this);
     this.render = this.render.bind(this);
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.addEventListener("change", this.render);
+    this.controls = new OrbitControls(
+      this.gameState.camera,
+      this.renderer.domElement
+    );
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.1;
+    this.controls.minDistance = 10;
+    this.controls.maxDistance = 200;
+
+    this.controls.addEventListener("change");
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
     window.addEventListener("keydown", this.onKeyDown.bind(this));
     window.addEventListener("keyup", this.onKeyUp.bind(this));
+    this.animate();
   }
 
   onWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.gameState.camera.aspect = window.innerWidth / window.innerHeight;
+    this.gameState.camera.updateProjectionMatrix();
+    this.gameState.renderer.setSize(window.innerWidth, window.innerHeight);
     this.render();
   }
 
@@ -64,13 +65,6 @@ export class GameEngine {
   }
 
   render() {
-    const deltaTime = this.clock.getDelta();
-    this.gameState.character.mixer?.update(deltaTime);
-    this.camera.position.set(
-      this.gameState.character.position.x,
-      this.gameState.character.position.y + 50,
-      this.gameState.character.position.z + 75
-    );
-    this.renderer.render(this.gameState.currentScene, this.camera);
+    this.renderer.render(this.gameState.currentScene, this.gameState.camera);
   }
 }

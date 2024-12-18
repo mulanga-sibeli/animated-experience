@@ -16,7 +16,7 @@ export class Character extends Object3D {
       (gltf) => {
         const model = gltf.scene;
         model.rotateY(Math.PI);
-        model.scale.set(30, 30, 30);
+        model.scale.set(4, 4.2, 3.5);
 
         model.traverse((node) => {
           if (node.isMesh) {
