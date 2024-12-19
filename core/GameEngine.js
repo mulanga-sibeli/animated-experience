@@ -1,14 +1,18 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as TransitionFunction from "../utils/StateTransition.js";
+
+const ROTATION_SPEED = 0.0025;
 
 export class GameEngine {
   camera;
   renderer;
-  controls;
   keys;
   gameState;
   clock;
+  canOrbit;
+  spherical;
+  currentLookAt;
+  lastMousePosition;
 
   constructor() {
     this.renderer = new THREE.WebGLRenderer();
@@ -22,24 +26,25 @@ export class GameEngine {
 
     this.keys = {};
     this.clock = new THREE.Clock();
+    this.canOrbit = false;
 
     this.animate = this.animate.bind(this);
     this.render = this.render.bind(this);
 
-    this.controls = new OrbitControls(
-      this.gameState.camera,
-      this.renderer.domElement
-    );
-    this.controls.enableDamping = true;
-    this.controls.dampingFactor = 0.1;
-    this.controls.minDistance = 10;
-    this.controls.maxDistance = 200;
+    this.currentLookAt = new THREE.Vector3();
+    this.spherical = new THREE.Spherical(10, Math.PI / 2, Math.PI / 4);
 
-    this.controls.addEventListener("change");
+    this.lastMousePosition = {
+      x: this.gameState.camera.position.x,
+      y: this.gameState.camera.position.y - 1,
+    };
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
     window.addEventListener("keydown", this.onKeyDown.bind(this));
     window.addEventListener("keyup", this.onKeyUp.bind(this));
+    window.addEventListener("mousemove", this.onMouseMove.bind(this));
+    window.addEventListener("mousedown", this.onMouseUp.bind(this));
+    window.addEventListener("mouseup", this.onMouseDown.bind(this));
     this.animate();
   }
 
@@ -50,12 +55,45 @@ export class GameEngine {
     this.render();
   }
 
+  onMouseMove(event) {
+    if (this.canOrbit === true) {
+      const deltaX = event.clientX - this.lastMousePosition.x;
+      const deltaY = event.clientY - this.lastMousePosition.y;
+
+      this.lastMousePosition = { x: event.clientX, y: event.clientY };
+      this.spherical.theta -= deltaX * ROTATION_SPEED;
+      this.spherical.phi += deltaY * ROTATION_SPEED;
+
+      this.spherical.theta = this.spherical.theta % (2 * Math.PI);
+      this.spherical.phi = Math.max(
+        Math.PI / 6,
+        Math.min(Math.PI - Math.PI / 6, this.spherical.phi)
+      );
+      this.lookAtPosition = new THREE.Vector3().setFromSpherical(
+        new THREE.Spherical(
+          this.spherical.radius,
+          this.spherical.phi,
+          this.spherical.theta
+        )
+      );
+      this.gameState.camera.lookAt(this.lookAtPosition);
+    }
+  }
+
   onKeyDown(event) {
     this.keys[event.key.toLowerCase()] = true;
   }
 
   onKeyUp(event) {
     this.keys[event.key.toLowerCase()] = false;
+  }
+
+  onMouseDown() {
+    this.canOrbit = !this.canOrbit;
+  }
+
+  onMouseUp() {
+    this.canOrbit = !this.canOrbit;
   }
 
   animate() {
