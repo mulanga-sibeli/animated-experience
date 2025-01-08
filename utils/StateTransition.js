@@ -1,6 +1,5 @@
 import { StreetScene } from "../scenes/StreetScene.js";
 import { GameState } from "../core/GameState.js";
-import { Move } from "../enums/Actions.js";
 import * as THREE from "three";
 
 export function initializeGame() {
@@ -13,25 +12,30 @@ export function initializeGame() {
   );
 
   camera.position.set(0, 10, 0);
-  const gameState = new GameState(currentScene, camera);
+  const gameState = new GameState(
+    currentScene,
+    camera,
+    new THREE.Vector3(0, 9.5, 5)
+  );
   return gameState;
 }
 
 export function handleAction(gameState, keys) {
   const characterSpeed = 0.1;
 
+  // TODO: Fix rotated movement.
   switch (true) {
     case keys["w"]:
-      gameState.camera.position.z -= characterSpeed;
+      if (gameState.cameraTarget.z < gameState.camera.position.z)
+        gameState.camera.position.z -= characterSpeed;
+      else gameState.camera.position.z += characterSpeed;
+
       break;
     case keys["s"]:
-      gameState.camera.position.z += characterSpeed;
+      if (gameState.cameraTarget.z < gameState.camera.position.z)
+        gameState.camera.position.z += characterSpeed;
+      else gameState.camera.position.z -= characterSpeed;
       break;
-    case keys["a"]:
-      gameState.camera.position.x -= characterSpeed;
-      break;
-    case keys["d"]:
-      gameState.camera.position.x += characterSpeed;
   }
 
   if (gameState.currentScene.sky)
