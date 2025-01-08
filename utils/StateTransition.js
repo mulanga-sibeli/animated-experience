@@ -21,23 +21,43 @@ export function initializeGame() {
 }
 
 export function handleAction(gameState, keys) {
-  const characterSpeed = 0.1;
+  const characterSpeed = 0.25;
+  const forwardDirection = new THREE.Vector3();
+  gameState.camera.getWorldDirection(forwardDirection);
+  console.log(forwardDirection);
 
-  // TODO: Fix rotated movement.
+  forwardDirection.y = 0;
+  forwardDirection.normalize();
+
+  let rightDirection = new THREE.Vector3();
+  rightDirection
+    .crossVectors(forwardDirection, gameState.camera.up)
+    .normalize();
+
   switch (true) {
     case keys["w"]:
-      if (gameState.cameraTarget.z < gameState.camera.position.z)
-        gameState.camera.position.z -= characterSpeed;
-      else gameState.camera.position.z += characterSpeed;
-
+      gameState.camera.position.addScaledVector(
+        forwardDirection,
+        characterSpeed
+      );
       break;
     case keys["s"]:
-      if (gameState.cameraTarget.z < gameState.camera.position.z)
-        gameState.camera.position.z += characterSpeed;
-      else gameState.camera.position.z -= characterSpeed;
+      gameState.camera.position.addScaledVector(
+        forwardDirection,
+        -characterSpeed
+      );
+      break;
+    case keys["a"]:
+      gameState.camera.position.addScaledVector(
+        rightDirection,
+        -characterSpeed
+      );
+      break;
+    case keys["d"]:
+      gameState.camera.position.addScaledVector(rightDirection, characterSpeed);
       break;
   }
 
   if (gameState.currentScene.sky)
-    gameState.currentScene.sky.rotation.y += 0.0001;
+    gameState.currentScene.sky.rotation.y += 0.00025;
 }
