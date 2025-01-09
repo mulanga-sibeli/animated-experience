@@ -24,7 +24,6 @@ export function handleAction(gameState, keys) {
   const characterSpeed = 0.25;
   const forwardDirection = new THREE.Vector3();
   gameState.camera.getWorldDirection(forwardDirection);
-  console.log(forwardDirection);
 
   forwardDirection.y = 0;
   forwardDirection.normalize();

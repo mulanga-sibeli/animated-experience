@@ -18,6 +18,13 @@ export class StreetScene extends Scene {
         model.position.set(0, 0, 0);
         model.scale.set(1, 1.1, 1);
 
+        model.traverse((child) => {
+          if (child.isMesh) {
+            const boxHelper = new THREE.BoxHelper(child, 0xff0000);
+            this.add(boxHelper);
+          }
+        });
+
         this.animations = gltf.animations;
         this.add(model);
       },
@@ -51,12 +58,5 @@ export class StreetScene extends Scene {
     const directionalLight = new THREE.DirectionalLight(0xfffffe, 5);
     directionalLight.position.set(100, 100, 100);
     this.add(directionalLight);
-
-    const axesHelper = new THREE.AxesHelper(10000);
-    this.add(axesHelper);
-
-    this.children.forEach((child) => {
-      console.log(child.type);
-    });
   }
 }
